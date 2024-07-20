@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chat APP</title>
+  </head>
+  <style>
+    p{
+        background-color: rgb(60, 91, 219);
+        color: white;
+        padding: 10px;
+        border: 2px solid rgb(244, 240, 240);
+        border-radius: 10px; 
+        margin: auto;
+        display: inline-block;
+        align-items: center;    /* Center align vertically */
+        display: flex;
+
+
+    }
+  
+    textarea{
+        height: 50px;
+        width: 400px;
+        border-radius: 5px;
+        overflow-y: auto;
+        resize: both;
+
+    }
+    button{
+        border-radius: 5px;
+        height: 35px;
+        width: 90px;
+
+    }
+  </style>
+  <body>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <h1><i style="color: rgb(29, 105, 228);" class="fa fa-comment" aria-hidden="true"></i>
+        Quickchat</h1>
+
+        <div>
+<textarea name="" id="message" placeholder="Enter Message" ></textarea>
+    <!-- <input type="text" id="message" placeholder="Enter Message" /> -->
+    <button id="sendBtn" style="background-color: rgb(34, 87, 233);color: white;">Send</button>
+<br>
+<br>
+</div>
+    <div id="messages"></div> 
+
+    <script src="/socket.io/socket.io.js"></script>
+    <!-- the above line is to connect index.js with socket -->
+    <script>
+      const socket = io();
+      const sendBtn = document.getElementById("sendBtn");
+      const messageInput = document.getElementById("message");
+      const allMessages = document.getElementById("messages");
+
+      socket.on("message", (message) => {
+        const p = document.createElement("p");
+        p.innerText = message;
+        allMessages.appendChild(p);
+      });
+
+      sendBtn.addEventListener("click", (e) => {
+        const message = messageInput.value;
+        console.log(message);
+        socket.emit("user-message", message);
+      });
+    </script>
+  </body>
+</html>
